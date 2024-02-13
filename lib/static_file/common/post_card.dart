@@ -1,5 +1,6 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:blogapp/features/auth/controller/auth_controller.dart';
+import 'package:blogapp/features/post/controller/post_controller.dart';
 import 'package:blogapp/model/post_model.dart';
 import 'package:blogapp/static_file/constants/constants.dart';
 import 'package:blogapp/theme/colors_scheme.dart';
@@ -14,6 +15,10 @@ class PostCard extends ConsumerWidget{
     super.key,
     required this.post,
   });
+
+  void deletePost(WidgetRef ref,BuildContext context){
+    ref.read(postControllerProvider.notifier).deletePost(context, post);
+  }
 
 
 
@@ -79,7 +84,7 @@ class PostCard extends ConsumerWidget{
                               ),
                               if(post.uid == user.uid)...[
                                     IconButton(
-                                      onPressed: (){}, 
+                                      onPressed: () => deletePost(ref, context), 
                                       icon: Icon(
                                         Icons.delete,
                                         color: ColorCodes.redColor,
