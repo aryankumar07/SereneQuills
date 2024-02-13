@@ -55,9 +55,9 @@ class _addPostTypeScreenState extends ConsumerState<AddPostTypeScreen>{
 
     if(res!=null){
       setState(() {
-      print('enterd for image picking');
+      // print('enterd for image picking');
       bannerFile = File(res.files.first.path!); 
-      print(bannerFile);
+      // print(bannerFile);
       });
     }else{
       ShowSnackBar(context, 'something went wrong');

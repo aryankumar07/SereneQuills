@@ -52,7 +52,7 @@ class PostController extends StateNotifier<bool>{
         id: postid, 
         title: title, 
         description: description, 
-        CommunityName: selectedCommunity.name, 
+        communityName: selectedCommunity.name, 
         communityProfilePic: selectedCommunity.avatar, 
         upvotes: [], 
         downvotes: [], 
@@ -68,7 +68,10 @@ class PostController extends StateNotifier<bool>{
         state=false;
         res.fold(
           (l) => ShowSnackBar(context,l.message), 
-        (r) => Routemaster.of(context).pop());
+        (r) {
+          ShowSnackBar(context, 'Post Created Successfully');
+        return Routemaster.of(context).pop();
+        }); 
     }
 
      void shareLinkpost({
@@ -84,7 +87,7 @@ class PostController extends StateNotifier<bool>{
         id: postid, 
         title: title, 
         description: null, 
-        CommunityName: selectedCommunity.name, 
+        communityName: selectedCommunity.name, 
         communityProfilePic: selectedCommunity.avatar, 
         upvotes: [], 
         downvotes: [], 
@@ -100,7 +103,10 @@ class PostController extends StateNotifier<bool>{
         state=false;
         res.fold(
           (l) => ShowSnackBar(context,l.message), 
-        (r) => Routemaster.of(context).pop());
+        (r) {
+        ShowSnackBar(context, 'Post Created Successfully');
+        return Routemaster.of(context).pop();
+        });
       }
 
       void shareImagepost({
@@ -122,7 +128,7 @@ class PostController extends StateNotifier<bool>{
         id: postid, 
         title: title, 
         description: null, 
-        CommunityName: selectedCommunity.name, 
+        communityName: selectedCommunity.name, 
         communityProfilePic: selectedCommunity.avatar, 
         upvotes: [], 
         downvotes: [], 
@@ -147,7 +153,9 @@ class PostController extends StateNotifier<bool>{
 
     Stream<List<Post>> fetchUserPosts(List<Community> communities){
       if(communities.isNotEmpty){
-        return _postRepository.fetchUserPosts(communities);
+        Stream<List<Post>> res = _postRepository.fetchUserPosts(communities);
+        print('list of post $res');
+        return res;
       }else{
         return Stream.value([]);
       }

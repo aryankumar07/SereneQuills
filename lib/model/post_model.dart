@@ -9,7 +9,7 @@ class Post {
   final String title;
   final String? link;
   final String? description;
-  final String CommunityName;
+  final String communityName;
   final String communityProfilePic;
   final List<String> upvotes;
   final List<String> downvotes;
@@ -25,7 +25,7 @@ class Post {
     required this.title, 
     required this.link, 
     required this.description,
-    required this.CommunityName, 
+    required this.communityName, 
     required this.communityProfilePic, 
     required this.upvotes, 
     required this.downvotes, 
@@ -41,7 +41,7 @@ class Post {
     String? title,
     String? link,
     String? description,
-    String? CommunityName,
+    String? communityName,
     String? communityProfilePic,
     List<String>? upvotes,
     List<String>? downvotes,
@@ -57,7 +57,7 @@ class Post {
       title: title ?? this.title,
       link: link ?? this.link,
       description: description ?? this.description,
-      CommunityName: CommunityName ?? this.CommunityName,
+      communityName: communityName ?? this.communityName,
       communityProfilePic: communityProfilePic ?? this.communityProfilePic,
       upvotes: upvotes ?? this.upvotes,
       downvotes: downvotes ?? this.downvotes,
@@ -76,7 +76,7 @@ class Post {
       'title': title,
       'link': link,
       'description': description,
-      'CommunityName': CommunityName,
+      'communityName': communityName,
       'communityProfilePic': communityProfilePic,
       'upvotes': upvotes,
       'downvotes': downvotes,
@@ -91,27 +91,27 @@ class Post {
 
   factory Post.fromMap(Map<String, dynamic> map) {
     return Post(
-      id: map['id'] as String,
-      title: map['title'] as String,
-      link: map['link'] != null ? map['link'] as String : null,
-      description: map['description'] != null ? map['description'] as String : null,
-      CommunityName: map['CommunityName'] as String,
-      communityProfilePic: map['communityProfilePic'] as String,
-      upvotes: List<String>.from((map['upvotes'] as List<String>)),
-      downvotes: List<String>.from((map['downvotes'] as List<String>)),
-      commentCount: map['commentCount'] as int,
+      id: map['id'] ?? '',
+      title: map['title'] ?? '',
+      link: map['link'],
+      description: map['description'],
+      communityName: map['communityName'] ?? '',
+      communityProfilePic: map['communityProfilePic'] ?? '',
+      upvotes: List<String>.from(map['upvotes']),
+      downvotes: List<String>.from(map['downvotes']),
+      commentCount: map['commentCount'] ?? 0,
       Username: map['Username'] as String,
       uid: map['uid'] as String,
       type: map['type'] as String,
-      creationTime: DateTime.fromMillisecondsSinceEpoch(map['creationTime'] as int),
-      awards: List<String>.from((map['awards'] as List<String>),
-    ));
+      creationTime: DateTime.fromMillisecondsSinceEpoch(map['creationTime']),
+      awards: List<String>.from(map['awards'])
+      );
   }
 
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, link: $link, description: $description, CommunityName: $CommunityName, communityProfilePic: $communityProfilePic, upvotes: $upvotes, downvotes: $downvotes, commentCount: $commentCount, Username: $Username, uid: $uid, type: $type, creationTime: $creationTime, awards: $awards)';
+    return 'Post(id: $id, title: $title, link: $link, description: $description, communityName: $communityName, communityProfilePic: $communityProfilePic, upvotes: $upvotes, downvotes: $downvotes, commentCount: $commentCount, Username: $Username, uid: $uid, type: $type, creationTime: $creationTime, awards: $awards)';
   }
 
   @override
@@ -123,7 +123,7 @@ class Post {
       other.title == title &&
       other.link == link &&
       other.description == description &&
-      other.CommunityName == CommunityName &&
+      other.communityName == communityName &&
       other.communityProfilePic == communityProfilePic &&
       listEquals(other.upvotes, upvotes) &&
       listEquals(other.downvotes, downvotes) &&
@@ -141,7 +141,7 @@ class Post {
       title.hashCode ^
       link.hashCode ^
       description.hashCode ^
-      CommunityName.hashCode ^
+      communityName.hashCode ^
       communityProfilePic.hashCode ^
       upvotes.hashCode ^
       downvotes.hashCode ^

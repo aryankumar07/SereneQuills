@@ -15,20 +15,22 @@ class FeedScreen extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(userCommunityProvider).when(
       data: (communities){
+        // print('communities data is $communities');
         return ref.watch(userPostProvider(communities))
         .when(
-          data: (posts){
+          data: (data){
+            print('length of data is ${data.length}');
              return ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (context,index) {
-                final post = posts[index];
-                // return PostCard(post: post);
-                return Container(
-                  child: Text('data'),
-                );
+              itemCount: data.length,
+              itemBuilder: (BuildContext context,int index) {
+                final post = data[index];
+                return PostCard(post: post);
               });
           }, 
-        error: (error, stackTrace) => ErrorText(error: error.toString()), 
+        error: (error, stackTrace) {
+          print(error);
+        return ErrorText(error: error.toString());
+        },
         loading: ()=>Loader());
       }, 
       error: (error, stackTrace) => ErrorText(error: error.toString()), 
