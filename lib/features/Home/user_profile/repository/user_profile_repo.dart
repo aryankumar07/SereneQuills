@@ -1,3 +1,4 @@
+import 'package:blogapp/model/post_model.dart';
 import 'package:blogapp/model/usermodel.dart';
 import 'package:blogapp/static_file/constants/firebase_const.dart';
 import 'package:blogapp/static_file/failure.dart';
@@ -19,6 +20,7 @@ class UserProfileRepository{
   ):_firestore=firestore;
 
    CollectionReference get _user => _firestore.collection(FirebaseConstants.usersCollection);
+   CollectionReference get _posts => _firestore.collection(FirebaseConstants.postsCollection);
 
    FutureVoid editProfile(UserModel user) async {
     try{
@@ -30,4 +32,12 @@ class UserProfileRepository{
     }
    }
 
+   Stream<List<Post>> getUserPost(String uid){
+    return _posts.where('uid',isEqualTo: uid)
+    .orderBy('creationTime',descending: true)
+    .snapshots()
+    .map((event) => 
+    event.docs.map((e) => Post.fromMap(e.data() as Map<String,dynamic>)).toList());
+   }
+ 
 }

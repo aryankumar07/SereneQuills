@@ -2,12 +2,17 @@ import 'dart:io';
 
 import 'package:blogapp/features/Home/user_profile/repository/user_profile_repo.dart';
 import 'package:blogapp/features/auth/controller/auth_controller.dart';
+import 'package:blogapp/model/post_model.dart';
 import 'package:blogapp/model/usermodel.dart';
 import 'package:blogapp/static_file/constants/utils.dart';
 import 'package:blogapp/static_file/providers/storage_repo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
+
+final getUserPostProvider = StreamProvider.family((ref,String uid) {
+  return  ref.read(userProifileControllerProvider.notifier).getUserPost(uid);
+});
 
 
 final userProifileControllerProvider = StateNotifierProvider<UserProfileController,bool>((ref) =>
@@ -76,6 +81,10 @@ class UserProfileController extends StateNotifier<bool> {
           Routemaster.of(context).pop();
           },
         );
+  }
+
+  Stream<List<Post>> getUserPost(String uid){
+    return _userProfileRepository.getUserPost(uid);
   }
 
 }

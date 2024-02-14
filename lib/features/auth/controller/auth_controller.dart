@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:blogapp/model/usermodel.dart';
 import 'package:blogapp/static_file/constants/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';

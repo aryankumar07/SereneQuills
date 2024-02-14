@@ -1,6 +1,3 @@
-// login Screen contaning the UI codes
-
-
 import 'package:blogapp/features/auth/controller/auth_controller.dart';
 import 'package:blogapp/static_file/common/loader.dart';
 import 'package:flutter/material.dart';

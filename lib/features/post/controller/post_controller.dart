@@ -2,15 +2,27 @@ import 'dart:io';
 
 import 'package:blogapp/features/auth/controller/auth_controller.dart';
 import 'package:blogapp/features/post/repository/post_repo.dart';
+import 'package:blogapp/model/comment_model.dart';
 import 'package:blogapp/model/comunity_model.dart';
 import 'package:blogapp/model/post_model.dart';
 import 'package:blogapp/static_file/constants/utils.dart';
 import 'package:blogapp/static_file/providers/firebase_provider.dart';
 import 'package:blogapp/static_file/providers/storage_repo_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
+
+final getPostCommentsProvider = StreamProvider.family((ref,String postId){
+  final postController = ref.read(postControllerProvider.notifier);
+  return postController.getCommentsofPost(postId);
+});
+
+final getPostIdProvider = StreamProvider.family((ref,String postId){
+  final postController = ref.read(postControllerProvider.notifier);
+  return postController.getPostUserId(postId);
+});
 
 final postControllerProvider = StateNotifierProvider<PostController,bool>((ref) {
   return PostController(
@@ -165,6 +177,42 @@ class PostController extends StateNotifier<bool>{
       final res =  await _postRepository.deletePost(post);
       res.fold((l) => ShowSnackBar(context,l.message),
        (r) => ShowSnackBar(context, 'Deleted succesfully'));
+    }
+
+    void upvote(Post post) async {
+      final userId = _ref.read(userProvider)!.uid;
+      _postRepository.upvote(post, userId);
+    }
+
+    void downvote(Post post) async {
+      final userId = _ref.read(userProvider)!.uid;
+      _postRepository.downvote(post, userId);
+    }
+
+    Stream<Post> getPostUserId(String postId){
+      return _postRepository.getPostUserId(postId);
+    }
+
+    void addComment({
+      required BuildContext context,
+      required String text,
+      required Post post,
+    }) async {
+      final user = _ref.read(userProvider)!;
+      String commentid = Uuid().v1();
+      CommentM comment = CommentM(
+        id: commentid, 
+        text: text, 
+        creationTime: DateTime.now() , 
+        postId: post.id, 
+        username: user.name, 
+        profilepic: user.profilePic);
+      final res = await _postRepository.addComment(comment);
+      res.fold((l) => ShowSnackBar(context,l.message), (r) => null);
+    }
+
+    Stream<List<CommentM>> getCommentsofPost(String postId){
+      return _postRepository.getCommentsofPost(postId);
     }
 
       

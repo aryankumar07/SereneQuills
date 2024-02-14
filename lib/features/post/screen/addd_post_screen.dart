@@ -60,7 +60,7 @@ class AddPostScreen extends ConsumerWidget{
           ),
         ),
         GestureDetector(
-          onTap: () => navigateToType(context, 'link '),
+          onTap: () => navigateToType(context, 'link'),
           child: SizedBox(
             height: 120,
             width: 120,

@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:blogapp/model/comunity_model.dart';
+import 'package:blogapp/model/post_model.dart';
 import 'package:blogapp/static_file/constants/firebase_const.dart';
 import 'package:blogapp/static_file/failure.dart';
 import 'package:blogapp/static_file/providers/firebase_provider.dart';
@@ -21,6 +22,7 @@ class CommunityRepoistory {
   ):_firestore=firestore;
 
   CollectionReference get _communities => _firestore.collection(FirebaseConstants.communitiesCollection);
+  CollectionReference get _posts => _firestore.collection(FirebaseConstants.postsCollection);
   
 
   FutureVoid createCommunity(Community community) async {
@@ -122,4 +124,15 @@ class CommunityRepoistory {
       return left(Failure(e.toString()));
     }
   }
+
+  Stream<List<Post>> getCommunityPost(String name){
+    return _posts.where('communityName',isEqualTo: name)
+    .orderBy('creationTime',descending: true)
+    .snapshots()
+    .map((event) => 
+    event.docs.map((e) => Post.fromMap(e.data() as Map<String,dynamic>)).toList());
+   }
+
+
+
 }

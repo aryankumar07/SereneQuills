@@ -8,6 +8,7 @@ import 'package:blogapp/features/communuty/screens/create_com_screen.dart';
 import 'package:blogapp/features/communuty/screens/edit_community_screen.dart';
 import 'package:blogapp/features/communuty/screens/mod_tools_screen.dart';
 import 'package:blogapp/features/post/screen/add_post_type_screen.dart';
+import 'package:blogapp/features/post/screen/comments_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -48,6 +49,10 @@ final loggedInRoute = RouteMap(routes: {
   '/add_post/:type':(RouteData)=>MaterialPage(child: AddPostTypeScreen(
       type: RouteData.pathParameters['type']!
   )),
+
+  '/post/:postId/comments' :(RouteData) => MaterialPage(child: CommentScreen(
+    postId: RouteData.pathParameters['postId']!,
+    )), 
   
 });
 

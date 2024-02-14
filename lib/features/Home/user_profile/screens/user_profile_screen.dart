@@ -1,6 +1,8 @@
+import 'package:blogapp/features/Home/user_profile/controller/user_profile_controller.dart';
 import 'package:blogapp/features/auth/controller/auth_controller.dart';
 import 'package:blogapp/static_file/common/error_text.dart';
 import 'package:blogapp/static_file/common/loader.dart';
+import 'package:blogapp/static_file/common/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -85,7 +87,20 @@ class UserProfileScreen extends ConsumerWidget{
                 )
             ];
           }, 
-          body: Text("Displaying Post")), 
+          body: ref.watch(getUserPostProvider(uid)).when(
+            data: (data) {
+              return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (BuildContext context,int index) {
+                final post = data[index];
+                return PostCard(post: post);
+              });
+            }, 
+            error: (error, stackTrace) {
+              print(error);
+            return ErrorText(error: error.toString());
+            },
+            loading: () => Loader()),),
         error: ((error, stackTrace) => ErrorText(error: error.toString())), 
         loading: () => Loader()),
     );

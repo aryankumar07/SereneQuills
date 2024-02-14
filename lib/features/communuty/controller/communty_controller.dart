@@ -1,8 +1,8 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:blogapp/features/auth/controller/auth_controller.dart';
 import 'package:blogapp/features/communuty/repository/community_repo.dart';
 import 'package:blogapp/model/comunity_model.dart';
+import 'package:blogapp/model/post_model.dart';
 import 'package:blogapp/static_file/constants/constants.dart';
 import 'package:blogapp/static_file/constants/utils.dart';
 import 'package:blogapp/static_file/failure.dart';
@@ -17,6 +17,10 @@ import 'package:routemaster/routemaster.dart';
 final userCommunityProvider = StreamProvider((ref) {
   final communityController = ref.read(CommunityControllerProvider.notifier);
   return communityController.getUserCommunity();
+});
+
+final getCommunityPostProvider = StreamProvider.family((ref,String name) {
+  return  ref.read(CommunityControllerProvider.notifier).getCommunityPost(name);
 });
 
 final getCommunityByNameProvider = StreamProvider.family((ref,String name) =>
@@ -146,6 +150,10 @@ class CommunityController extends StateNotifier<bool> {
     res.fold((l) => ShowSnackBar(context,l.message), (r) {
       Routemaster.of(context).pop();
     });
+  }
+
+  Stream<List<Post>> getCommunityPost(String name){
+    return _communityRepoistory.getCommunityPost(name);
   }
 
 
