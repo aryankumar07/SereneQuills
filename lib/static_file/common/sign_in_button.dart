@@ -4,9 +4,15 @@ import 'package:blogapp/features/auth/controller/auth_controller.dart';
 import 'package:blogapp/static_file/constants/constants.dart';
 
 class SignInButton extends ConsumerWidget{
+  final bool isFromLogin;
+
+  SignInButton({
+    super.key,
+    this.isFromLogin=true,
+  });
 
   void SigninWithgoogle(BuildContext context,WidgetRef ref){
-    ref.read(AuthControllerProvider.notifier).SignInWithGoogle(context);
+    ref.read(AuthControllerProvider.notifier).SignInWithGoogle(context, isFromLogin );
   }
 
   @override

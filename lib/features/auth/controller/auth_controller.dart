@@ -34,9 +34,9 @@ class AuthController extends StateNotifier<bool>{
   final Ref _ref;
   
 
-  void SignInWithGoogle(BuildContext context) async {
+  void SignInWithGoogle(BuildContext context,bool isFromLogin) async {
     state = true;
-    final user = await _authRepository.SignInWithGoogle();
+    final user = await _authRepository.SignInWithGoogle(isFromLogin);
     state = false;
     // print("in the auth Controller first");
     user.fold((l) => ShowSnackBar(context,l.message), (userModel) =>

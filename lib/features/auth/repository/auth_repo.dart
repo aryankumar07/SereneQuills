@@ -32,7 +32,7 @@ CollectionReference get _user => _firestore.collection('user');
 
 Stream<User?> get authStateChange => _auth.authStateChanges();
 
-FutureEither<UserModel> SignInWithGoogle() async {
+FutureEither<UserModel> SignInWithGoogle(bool isFromLogin) async {
   try{
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     final googleAuth = await googleUser?.authentication;
@@ -42,7 +42,12 @@ FutureEither<UserModel> SignInWithGoogle() async {
       idToken: googleAuth?.idToken,
     );
 
-    UserCredential userCredential = await _auth.signInWithCredential(Credentials);
+    UserCredential userCredential;
+    if(isFromLogin){
+      userCredential = await  _auth.signInWithCredential(Credentials);
+    }else{
+      userCredential = await _auth.currentUser!.linkWithCredential(Credentials);
+    }
 
     UserModel userModel;
 
